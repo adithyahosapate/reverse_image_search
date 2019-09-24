@@ -1,18 +1,17 @@
-from clustering import OnlineKmeans
+from clustering import OnlineKmeans, OfflineKmeans
 from extract_features import FeatureExtractor
 import time
 import glob
 
 
 def main(path):
-    clusterer = OnlineKmeans(5000)
-
+    online_clusterer = OnlineKmeans(5000)
+    # offline_clusterer = OfflineKmeans(5000)
+    online_clusterer.load_means()
     image_paths = glob.glob(path + "/*")
     f = FeatureExtractor(5000)
     start = time.time()
-    initial_seed = f.get_descriptors_from_path(image_paths[0])
-    clusterer.set_means_with_image(initial_seed)
-
+    # descriptors = []
     for i, image_path in enumerate(image_paths):
         try:
             descriptors = f.get_descriptors_from_path(image_path)
@@ -21,15 +20,12 @@ def main(path):
             continue
 
         for descriptor in descriptors:
+            online_clusterer.update_means(descriptor)
 
-            clusterer.update_means(descriptor)
-        print(i)
-        del descriptors
-
+    online_clusterer.save_means()
     end = time.time()
-    clusterer.save_means()
     print(end - start)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main("../sample_images")

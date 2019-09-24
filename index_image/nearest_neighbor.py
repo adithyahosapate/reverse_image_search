@@ -13,7 +13,7 @@ class NNQuery:
         self.KDTree = KDTree(self.means)
 
     def find_nearest_neighbors(self, points):
-        return [np.argmin(np.linalg.norm(self.means - point,axis=0)) for point in points]
+        return [np.argmin(np.linalg.norm(self.means - point,axis=1)) for point in points]
 
 
     def reset_points(self,means):
