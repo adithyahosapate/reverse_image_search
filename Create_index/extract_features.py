@@ -13,7 +13,7 @@ class FeatureExtractor:
         (_, descs) = self.sift.detectAndCompute(img, None)
         return descs
 
-    def get_descriptors(self, img : np.ndarray):
+    def get_descriptors(self, img: np.ndarray):
         (_, descs) = self.sift.detectAndCompute(img, None)
         return descs
 
@@ -26,7 +26,6 @@ def main(path):
             _ = f.get_descriptors(image_path)
         except:
             continue
-        print(i)
     end = time.time()
     print(end - start)
 
